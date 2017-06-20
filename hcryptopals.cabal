@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Lib
   other-modules:       Crypto.Pals.Encoding
+                     , Crypto.Pals.Xor
                      , Crypto.Pals.BitStream
   build-depends:       base >= 4.7 && < 5
                      , bytestring

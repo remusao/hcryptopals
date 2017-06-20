@@ -44,7 +44,7 @@ groupByN n xs =
 data BitChunk  = BitChunk
   { size    :: Int
   , getBits :: Word8
-  } deriving (Show)
+  } deriving (Show, Eq)
 
 type BitStream = [BitChunk]
 

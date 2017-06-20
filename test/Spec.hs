@@ -17,6 +17,7 @@ symbolsToWord8 = map (fromIntegral . ord)
 
 
 forAllB64 = forAll $
+  Gen.filter (\b64 -> length b64 `mod` 3 == 0) $
   Gen.list (Range.linear 1 100) (Gen.element $ symbolsToWord8 b64Symbols)
   where
     b64Symbols = ['0'..'9'] ++ ['A'..'Z'] ++ ['a'..'z'] ++ ['/', '+']
@@ -39,24 +40,26 @@ prop_groupByN =
         Gen.list (Range.linear 1 100) (Gen.word8 $ Range.linear 0 255)
 
       let bitStream = map (BitChunk 8) words
-      let groups = map (BitChunk n) $ groupByN n bitStream
-      toList groups === toList bitStream
+      let bitStream2 = map (BitChunk n) $ groupByN n bitStream
+      let bitStream3 = map (BitChunk 8) $ groupByN 8 bitStream2
+      bitStream === bitStream3
+      toList bitStream3 === toList bitStream
 
 
 prop_hex :: Property
 prop_hex =
     property $ do
-      hex <- forAllHex
-      let packed = B.pack hex
-      packed === (bitsToHex . hexToBits $ packed)
+      str <- forAllHex
+      let packed = B.pack str
+      packed === (unhex . hex $ packed)
 
 
 prop_base64 :: Property
 prop_base64 =
     property $ do
-      b64 <- forAllB64
-      let packed = B.pack b64
-      packed === (bitsToB64 . b64ToBits $ packed)
+      str <- forAllB64
+      let packed = B.pack str
+      packed === (unb64 . b64 $ packed)
 
 
 prop_hex2b64 :: Property

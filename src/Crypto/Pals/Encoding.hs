@@ -17,7 +17,7 @@ generateBytesToBitsTable symbols padding = V.generate 127 gen
     gen i =
       case chr i `elemIndex` symbols of
         Just n ->  BitChunk padding (fromIntegral n)
-        Nothing -> BitChunk 0 0
+        Nothing -> error "This character is not valid for the given encoding"
 
 
 generateBitsToBytesTable :: String -> VU.Vector Word8
