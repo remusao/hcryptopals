@@ -27,7 +27,7 @@ forAllHex = forAll $
   Gen.filter (\hex -> length hex `mod` 6 == 0) $
   Gen.list (Range.linear 1 100) (Gen.element $ symbolsToWord8 hexSymbols)
   where
-    hexSymbols = ['0'..'9'] ++ ['A'..'F']
+    hexSymbols = ['0'..'9'] ++ ['a'..'f']
 
 
 prop_groupByN :: Property

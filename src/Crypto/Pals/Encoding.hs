@@ -1,4 +1,8 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module Crypto.Pals.Encoding where
+
+import Control.DeepSeq
 
 import Data.List (elemIndex)
 import Data.Char (chr, ord)
@@ -38,10 +42,10 @@ fromBits stream n toBase = B.pack . map ((VU.!) toBase . fromIntegral) $ chunks
 --
 
 newtype Hex = Hex B.ByteString
-  deriving (Show, Eq)
+  deriving (Show, Eq, NFData)
 
 hexSymbols :: String
-hexSymbols = ['0'..'9'] ++ ['A'..'F']
+hexSymbols = ['0'..'9'] ++ ['a'..'f']
 
 hexToBits :: B.ByteString -> BitStream
 hexToBits bs = toBits bs fromHex
@@ -63,7 +67,7 @@ unhex (Hex bs) = bytes . hexToBits $ bs
 --
 
 newtype B64 = B64 B.ByteString
-  deriving (Show, Eq)
+  deriving (Show, Eq, NFData)
 
 
 b64Symbols :: String
